@@ -38,9 +38,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initializeBoardStatus() {
         for (i in 0..2){
             for (j in 0..2){
-                boardStatus[0][0]=-1
-                board[0][0].isEnabled=true
-                board[0][0].text=""
+                boardStatus[i][j]=-1
+
+            }
+        }
+        for(i in board){
+            for(button in i){
+                button.isEnabled=true
+                button.text=""
             }
         }
     }
@@ -92,12 +97,69 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(TURN_COUNT==9){
             updateDisplay("Draw Game")
         }
+        checkWinner()
+    }
+
+    private fun checkWinner() {
+        //For horizontal rows
+        for (i in 0..2){
+            if(boardStatus[i][0]==boardStatus[i][1] && boardStatus[i][0]==boardStatus[i][2]){
+                if(boardStatus[i][0]==1){
+                    updateDisplay("Player X is Winner")
+                    break
+                }else if(boardStatus[i][0]==0){
+                    updateDisplay("Player O is Winner")
+                    break
+                }
+            }
+        }
+        //For vertical cols
+        for (i in 0..2){
+            if(boardStatus[0][i]==boardStatus[1][i] && boardStatus[0][i]==boardStatus[2][i]){
+                if(boardStatus[0][i]==1){
+                    updateDisplay("Player X is Winner")
+                    break
+                }else if(boardStatus[0][i]==0){
+                    updateDisplay("Player O is Winner")
+                    break
+                }
+            }
+        }
+        //First Diagonal winner
+        if(boardStatus[0][0]==boardStatus[1][1] && boardStatus[0][0]==boardStatus[2][2]){
+            if(boardStatus[0][0]==1){
+                updateDisplay("Player X is Winner")
+
+            }else if(boardStatus[0][0]==0){
+                updateDisplay("Player O is Winner")
+
+            }
+        }
+        //Second Diagonal
+        if(boardStatus[0][2]==boardStatus[1][1] && boardStatus[0][2]==boardStatus[2][0]){
+            if(boardStatus[0][2]==1){
+                updateDisplay("Player X is Winner")
+
+            }else if(boardStatus[0][2]==0){
+                updateDisplay("Player O is Winner")
+
+            }
+        }
     }
 
     private fun updateDisplay(text: String) {
         displayTv.text=text
+        if(text.contains("Winner")){
+            disableBtn()
+        }
     }
-
+    private fun disableBtn(){
+        for (i in board){
+            for (button in i){
+                button.isEnabled=false
+            }
+        }
+    }
     private fun updateValue(row:Int, col:Int, player:Boolean){
         val text=if(player)"X" else "O"
         val value=if(player)1 else 0
