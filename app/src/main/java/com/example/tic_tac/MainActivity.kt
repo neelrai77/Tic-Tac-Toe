@@ -79,7 +79,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         }
-    }private fun updateValue(row:Int,col:Int,player:Boolean){
+
+        TURN_COUNT++
+        PLAYER=!PLAYER
+
+        if(PLAYER){
+            updateDisplay("Player X Turn")
+
+        }else{
+            updateDisplay("Player O Turn")
+        }
+        if(TURN_COUNT==9){
+            updateDisplay("Draw Game")
+        }
+    }
+
+    private fun updateDisplay(text: String) {
+        displayTv.text=text
+    }
+
+    private fun updateValue(row:Int, col:Int, player:Boolean){
         val text=if(player)"X" else "O"
         val value=if(player)1 else 0
         board[row][col].apply {
